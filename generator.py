@@ -19,29 +19,49 @@ def read(file_name):
     return vowels, frequency, rules
 
 
+def sub_frequency(sub, frequency):
+    s = 0
+    for elt in sub:
+        s += frequency[elt]
+    s = 100 / s
+    res = {}
+    for elt in sub:
+        res[elt] = frequency[elt] * s
+    return res
+
+
+def rand_choose(sounds, frequency):
+    i = random.random() * 100
+    for sound in sounds:
+        i -= frequency[sound]
+        if i <= 0:
+            return sound
+
+
 def generate_sounds(vowels, frequency, size):
     res = []
     *sounds, = frequency.keys()
-    *v, = vowels
-    nbCons = 0
+    nbCons = 1
+    nbVoy = 1
+    prev = None
     for i in range(size):
-        if nbCons == 2:
-            nbCons = 0
-            res.append(random.choice(v))
-            continue
-        n = random.choice(sounds)
+        s = sounds.copy()
+        if prev is not None:
+            s.remove(prev)
+        n = rand_choose(s, frequency)
+        while (nbVoy == 2 and n in vowels) or (nbCons == 2 and n not in vowels):
+            n = rand_choose(s, frequency)
         if n in vowels:
             nbCons = 0
+            nbVoy += 1
         else:
             nbCons += 1
+            nbVoy = 0
+        prev = n
         res.append(n)
     return res
 
 
-
 vowels, frequency, rules = read("config.json")
-print(vowels)
-print(frequency)
-print(rules)
-print(generate_sounds(vowels, frequency, 4))
+print(generate_sounds(vowels, frequency, 8))
 
