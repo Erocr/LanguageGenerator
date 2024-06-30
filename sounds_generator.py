@@ -38,5 +38,6 @@ def generate(size, phonemes, frequencies):
     return res
 
 
-phonemes, frequencies = read("french")
-print(generate(10, phonemes, frequencies))
+if __name__ == "__main__":
+    phonemes, frequencies = read("french")
+    print(generate(5, phonemes, frequencies))

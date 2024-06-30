@@ -57,7 +57,6 @@ def generate_infos(language_name, file_name):
     file_phonemes_freq.close()
 
 
-
-
-generate_infos("test", "test/phonemes_test.txt")
-print("done")
+if __name__ == "__main__":
+    generate_infos("french", "french/phonemes_fr.txt")
+    print("done")
